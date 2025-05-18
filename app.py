@@ -7,7 +7,12 @@ POSTS_DIR = "posts"
 
 @app.route('/')
 def index():
-    posts = [f[:-3] for f in os.listdir(POSTS_DIR) if f.endswith('.md')]
+    query = request.args.get('q', '').lower()
+    all_posts = [f[:-3] for f in os.listdir(POSTS_DIR) if f.endswith('.md')]
+    if query:
+        posts = [post for post in all_posts if query in post.lower()]
+    else:
+        posts = all_posts
     return render_template("index.html", posts=posts)
 
 @app.route('/post/<title>')
