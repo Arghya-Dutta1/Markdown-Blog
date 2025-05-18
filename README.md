@@ -1,7 +1,7 @@
 
 # 📖 Markdown Blog
 
-A simple Flask-based blog where users can create and view blog posts written in **Markdown**.
+A simple Flask-based blog where users can create, edit, search, view and delete blog posts written in **Markdown**.
 
 ## 🚀 Features
 
