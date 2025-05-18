@@ -58,25 +58,10 @@ markdown_blog/
    http://127.0.0.1:5000/
    ```
 
-## 📷 Screenshots
-
-| Home Page | Create Page | Post View |
-|-----------|-------------|-----------|
-| ![index](screenshots/index.png) | ![create](screenshots/create.png) | ![post](screenshots/post.png) |
-
-*(Add screenshots in a `/screenshots` folder for better presentation.)*
-
 ## 🔒 Security
 
 - Markdown rendering is safely handled by the `markdown` module.
 - Flask auto-escapes HTML unless explicitly marked as safe (`| safe` filter used carefully).
-
-## 📌 To Do / Improvements
-
-- [ ] Add user authentication
-- [ ] Edit/Delete posts
-- [ ] Search functionality
-- [ ] Add tags or categories
 
 ## 📄 License
 
