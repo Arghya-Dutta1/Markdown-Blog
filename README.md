@@ -8,6 +8,9 @@ A simple Flask-based blog where users can create and view blog posts written in 
 - Create new blog posts using Markdown syntax
 - View posts rendered as HTML
 - Live routing for individual blog posts
+- Edit/Delete existing posts
+- Search posts by title
+- Add and filter posts by tags
 - Input sanitization using the `markdown` library
 - Clean templated layout using Flask's `Jinja2`
 
@@ -22,11 +25,12 @@ A simple Flask-based blog where users can create and view blog posts written in 
 ```
 markdown_blog/
 ├── app.py                 # Main Flask application
-├── templates/             # HTML templates (base, index, post, create)
+├── templates/             # HTML templates (base, index, post, create, edit)
 │   ├── base.html
 │   ├── index.html
 │   ├── post.html
-│   └── create.html
+│   ├── create.html
+│   └── edit.html
 ├── static/                # Static files (CSS)
 │   └── style.css
 ├── posts/                 # Folder where markdown posts are stored
@@ -57,6 +61,21 @@ markdown_blog/
    ```
    http://127.0.0.1:5000/
    ```
+
+## 🔍 Search
+
+Search posts by title using the search box on the homepage.
+
+## 🏷 Tags
+
+- Add tags when creating a post (comma-separated).
+- Tags are shown on each post's page.
+- Click on a tag to view all related posts.
+
+## 📝 Edit/Delete
+
+- Edit the content of any existing post.
+- Delete posts with a confirmation prompt.
 
 ## 🔒 Security
 
