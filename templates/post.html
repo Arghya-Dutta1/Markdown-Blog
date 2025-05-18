@@ -1,7 +1,14 @@
 {% extends "base.html" %}
 {% block content %}
-<article>
-    <h2>{{ title }}</h2>
-    <div>{{ content | safe }}</div>
-</article>
+<h2>{{ title }}</h2>
+
+{% if tags %}
+<p><strong>Tags:</strong>
+    {% for tag in tags %}
+        <a href="{{ url_for('tagged', tag=tag) }}">{{ tag }}</a>{% if not loop.last %}, {% endif %}
+    {% endfor %}
+</p>
+{% endif %}
+
+<div>{{ content | safe }}</div>
 {% endblock %}
