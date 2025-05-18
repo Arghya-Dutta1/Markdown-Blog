@@ -1,4 +1,9 @@
-# This is my first Markdown Post
+Tags: flask, python
 
-- Just trying out my application
-- This is a **demo post**
+## This is my First Post
+
+- Checking `Bullet` Points
+
+**Bold Text**
+
+### This Post is Edited
