@@ -5,6 +5,7 @@
     <input type="text" name="title" id="title" placeholder="Post Title" required><br><br>
     <input type="text" name="tags" id="tags" placeholder="Tags (comma-separated)"><br><br>
     <textarea name="content" id="content" rows="10" placeholder="Write in Markdown..." required></textarea><br>
+    <p id="counter-display">(Words: 0, Characters: 0)</p><br>
     <button type="submit">Create Post</button>
 </form>
 
@@ -13,8 +14,8 @@ document.addEventListener("DOMContentLoaded", function () {
     const titleInput = document.getElementById("title");
     const contentInput = document.getElementById("content");
     const tagsInput = document.getElementById("tags");
+    const counterDisplay = document.getElementById("counter-display");
 
-    // Load saved draft
     if (localStorage.getItem("draftTitle")) {
         titleInput.value = localStorage.getItem("draftTitle");
     }
@@ -25,23 +26,31 @@ document.addEventListener("DOMContentLoaded", function () {
         tagsInput.value = localStorage.getItem("draftTags");
     }
 
-    // Save draft on input
     titleInput.addEventListener("input", () => {
         localStorage.setItem("draftTitle", titleInput.value);
     });
     contentInput.addEventListener("input", () => {
         localStorage.setItem("draftContent", contentInput.value);
+        updateCounters();
     });
     tagsInput.addEventListener("input", () => {
         localStorage.setItem("draftTags", tagsInput.value);
     });
 
-    // Clear draft on submit
     document.querySelector("form").addEventListener("submit", () => {
         localStorage.removeItem("draftTitle");
         localStorage.removeItem("draftContent");
         localStorage.removeItem("draftTags");
     });
+
+    function updateCounters() {
+        const text = contentInput.value;
+        const words = text.trim().split(/\s+/).filter(w => w.length > 0).length;
+        const chars = text.length;
+        counterDisplay.textContent = `(Words: ${words}, Characters: ${chars})`;
+    }
+
+    updateCounters();
 });
 </script>
 {% endblock %}
