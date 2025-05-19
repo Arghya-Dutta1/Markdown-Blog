@@ -2,7 +2,60 @@
 {% block content %}
 <h2>Edit Post: {{ title }}</h2>
 <form method="post">
-    <textarea name="content" rows="10" required>{{ content }}</textarea><br>
-    <button type="submit">Update</button>
+    <div style="display: flex; gap: 20px;">
+      <textarea name="content" id="content" rows="10" required style="width: 50%;">{{ content }}</textarea>
+      <div id="preview" style="width: 50%; border: 1px solid #ccc; padding: 10px; overflow-y: auto; max-height: 300px;"></div>
+    </div>
+
+    <br>
+    <button type="button" id="toggle-preview">Toggle Preview</button><br><br>
+
+    <p id="counter-display">(Words: 0, Characters: 0)</p><br>
+
+    <button type="submit">Save Changes</button>
 </form>
+
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const contentInput = document.getElementById("content");
+    const previewDiv = document.getElementById("preview");
+    const toggleButton = document.getElementById("toggle-preview");
+    const counterDisplay = document.getElementById("counter-display");
+
+    let previewVisible = true;
+
+    function updateCounters() {
+        const text = contentInput.value;
+        const words = text.trim().split(/\s+/).filter(w => w.length > 0).length;
+        const chars = text.length;
+        counterDisplay.textContent = `(Words: ${words}, Characters: ${chars})`;
+    }
+
+    function updatePreview() {
+        const markdownText = contentInput.value;
+        previewDiv.innerHTML = marked.parse(markdownText);
+    }
+
+    updateCounters();
+    updatePreview();
+
+    contentInput.addEventListener("input", () => {
+        updateCounters();
+        if (previewVisible) {
+            updatePreview();
+        }
+    });
+
+    toggleButton.addEventListener("click", () => {
+        previewVisible = !previewVisible;
+        if (previewVisible) {
+            previewDiv.style.display = "block";
+            updatePreview();
+        } else {
+            previewDiv.style.display = "none";
+        }
+    });
+});
+</script>
 {% endblock %}

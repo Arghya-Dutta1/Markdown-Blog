@@ -4,17 +4,43 @@
 <form method="post">
     <input type="text" name="title" id="title" placeholder="Post Title" required><br><br>
     <input type="text" name="tags" id="tags" placeholder="Tags (comma-separated)"><br><br>
-    <textarea name="content" id="content" rows="10" placeholder="Write in Markdown..." required></textarea><br>
+
+    <div style="display: flex; gap: 20px;">
+      <textarea name="content" id="content" rows="10" placeholder="Write in Markdown..." required style="width: 50%;"></textarea>
+      <div id="preview" style="width: 50%; border: 1px solid #ccc; padding: 10px; overflow-y: auto; max-height: 300px;"></div>
+    </div>
+
+    <br>
+    <button type="button" id="toggle-preview">Toggle Preview</button><br><br>
+
     <p id="counter-display">(Words: 0, Characters: 0)</p><br>
+
     <button type="submit">Create Post</button>
 </form>
 
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 <script>
 document.addEventListener("DOMContentLoaded", function () {
     const titleInput = document.getElementById("title");
     const contentInput = document.getElementById("content");
     const tagsInput = document.getElementById("tags");
+    const previewDiv = document.getElementById("preview");
+    const toggleButton = document.getElementById("toggle-preview");
     const counterDisplay = document.getElementById("counter-display");
+
+    let previewVisible = true;
+
+    function updateCounters() {
+        const text = contentInput.value;
+        const words = text.trim().split(/\s+/).filter(w => w.length > 0).length;
+        const chars = text.length;
+        counterDisplay.textContent = `(Words: ${words}, Characters: ${chars})`;
+    }
+
+    function updatePreview() {
+        const markdownText = contentInput.value;
+        previewDiv.innerHTML = marked.parse(markdownText);
+    }
 
     if (localStorage.getItem("draftTitle")) {
         titleInput.value = localStorage.getItem("draftTitle");
@@ -26,15 +52,33 @@ document.addEventListener("DOMContentLoaded", function () {
         tagsInput.value = localStorage.getItem("draftTags");
     }
 
+    updateCounters();
+    updatePreview();
+
     titleInput.addEventListener("input", () => {
         localStorage.setItem("draftTitle", titleInput.value);
     });
+
     contentInput.addEventListener("input", () => {
         localStorage.setItem("draftContent", contentInput.value);
         updateCounters();
+        if (previewVisible) {
+          updatePreview();
+        }
     });
+
     tagsInput.addEventListener("input", () => {
         localStorage.setItem("draftTags", tagsInput.value);
+    });
+
+    toggleButton.addEventListener("click", () => {
+        previewVisible = !previewVisible;
+        if (previewVisible) {
+            previewDiv.style.display = "block";
+            updatePreview();
+        } else {
+            previewDiv.style.display = "none";
+        }
     });
 
     document.querySelector("form").addEventListener("submit", () => {
@@ -42,15 +86,6 @@ document.addEventListener("DOMContentLoaded", function () {
         localStorage.removeItem("draftContent");
         localStorage.removeItem("draftTags");
     });
-
-    function updateCounters() {
-        const text = contentInput.value;
-        const words = text.trim().split(/\s+/).filter(w => w.length > 0).length;
-        const chars = text.length;
-        counterDisplay.textContent = `(Words: ${words}, Characters: ${chars})`;
-    }
-
-    updateCounters();
 });
 </script>
 {% endblock %}
