@@ -5,6 +5,12 @@ import os
 app = Flask(__name__)
 POSTS_DIR = "posts"
 
+def estimate_reading_time(text):
+    words = text.split()
+    words_per_minute = 100
+    time = max(1, len(words) // words_per_minute)
+    return f"(Est. {time} min read)"
+
 @app.route('/')
 def index():
     query = request.args.get('q', '').lower()
@@ -25,12 +31,13 @@ def post(title):
         if lines[0].startswith("Tags:"):
             tags_line = lines[0][5:].strip()
             tags = [tag.strip() for tag in tags_line.split(",") if tag.strip()]
-            content = "".join(lines[2:])  # Skip tags line and one blank line
+            content = "".join(lines[2:]) 
         else:
             tags = []
             content = "".join(lines)
     html = markdown.markdown(content)
-    return render_template("post.html", title=title, content=html, tags=tags)
+    reading_time = estimate_reading_time(content)
+    return render_template("post.html", title=title, content=html, tags=tags, reading_time=reading_time)
 
 @app.route('/create', methods=['GET', 'POST'])
 def create():
